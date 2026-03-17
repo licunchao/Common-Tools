@@ -2,21 +2,6 @@
 
 本文详细整理了 `from selenium.webdriver.common.by import By` 类中提供的 **8 种定位策略**。这些方法是 Selenium 自动化测试中寻找页面元素的基础。
 
-------
-
-## 📋 目录
-
-1. [核心用法概览](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#核心用法概览)
-2. [🏆 第一梯队：首选推荐 (ID, Name, Class)](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#-第一梯队首选推荐)
-3. [🥈 第二梯队：灵活强大 (CSS, XPath)](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#-第二梯队灵活强大)
-4. [🥉 第三梯队：特定场景 (Link, Tag)](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#-第三梯队特定场景)
-5. [⚡ 速查对比表](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#-速查对比表)
-6. [💡 最佳实践与代码示例](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#-最佳实践与代码示例)
-
-------
-
-## 核心用法概览
-
 在 Selenium 中，`By` 类通常与 `driver.find_element()` (查找单个) 或 `driver.find_elements()` (查找多个) 配合使用。
 
 **基本语法：**
@@ -31,9 +16,7 @@ element = driver.find_element(By.策略名, "定位值")
 elements = driver.find_elements(By.策略名, "定位值")
 ```
 
-------
-
-## 🏆 第一梯队：首选推荐
+## 一、第一梯队：首选推荐
 
 *稳定性高、执行速度快，应优先使用。*
 
@@ -97,7 +80,7 @@ elements = driver.find_elements(By.策略名, "定位值")
 
 ------
 
-## 🥈 第二梯队：灵活强大
+## 二、第二梯队：灵活强大
 
 *当第一梯队无法满足需求时使用，功能最全面。*
 
@@ -164,7 +147,7 @@ elements = driver.find_elements(By.策略名, "定位值")
 
 ------
 
-## 🥉 第三梯队：特定场景
+## 三、第三梯队：特定场景
 
 *用于处理超链接或批量操作。*
 
@@ -213,7 +196,7 @@ elements = driver.find_elements(By.策略名, "定位值")
 
 ------
 
-## ⚡ 速查对比表
+## 四、速查对比表
 
 | 定位方式         | 代码常量               | 稳定性 | 速度   | 推荐使用场景                             |
 | ---------------- | ---------------------- | ------ | ------ | ---------------------------------------- |
@@ -228,7 +211,7 @@ elements = driver.find_elements(By.策略名, "定位值")
 
 ------
 
-## 💡 最佳实践与代码示例
+## 五、最佳实践与代码示例
 
 ### 1. 优先级策略
 

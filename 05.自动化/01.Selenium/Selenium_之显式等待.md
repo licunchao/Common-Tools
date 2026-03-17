@@ -3,27 +3,9 @@
 > **版本说明**：本文基于 **Selenium 4.x+** (2026年最新标准)。
 > **核心模块**：`selenium.webdriver.support.ui.WebDriverWait` 和 `selenium.webdriver.support.expected_conditions` (简称 `EC`)。
 
-------
-
-## 📑 目录
-
-1. [显式等待的核心架构](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#1-显式等待的核心架构)
-2. [WebDriverWait 类详解](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#2-webdriverwait-类详解)
-3. Expected Conditions (EC) 全方法字典
-   - [3.1 元素状态类 (最常用)](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#31-元素状态类最常用)
-   - [3.2 文本与属性类](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#32-文本与属性类)
-   - [3.3 弹窗与警告类](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#33-弹窗与警告类)
-   - [3.4 框架与窗口类](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#34-框架与窗口类)
-   - [3.5 高级自定义类](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#35-高级自定义类)
-4. [实战场景代码库](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#4-实战场景代码库)
-5. [高级技巧：反向等待与自定义条件](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#5-高级技巧反向等待与自定义条件)
-6. [常见报错与调试](https://www.qianwen.com/chat/4843b1880b12499e966e9b0f3baa05f7?st=null&bizPassParams=%26x-platform%3DexternalH5#6-常见报错与调试)
-
 ## 1. 显式等待的核心架构
 
 显式等待不是“死等”，而是一个**轮询机制 (Polling Mechanism)**。
-
-### ⚙️ 工作流程
 
 1. **初始化**：创建一个 `WebDriverWait` 对象，设定最大超时时间（如 10 秒）和轮询频率（默认 0.5 秒）。
 
@@ -44,7 +26,7 @@
 
 ## 2. WebDriverWait 类详解
 
-### 🛠️ 初始化参数
+**初始化参数**
 
 ```python
 from selenium.webdriver.support.ui import WebDriverWait
@@ -60,7 +42,7 @@ wait = WebDriverWait(
 - **`poll_frequency`**: 选填。两次检查之间的睡眠时间。设得太短会增加 CPU 负载，设得太长会降低响应速度。
 - **`ignored_exceptions`**: 选填。在轮询过程中，如果抛出这些异常，会被视为“条件未满足”而继续等待，而不是直接报错。默认已经忽略了 `NoSuchElementException`。
 
-### 🔄 核心方法
+**核心方法**
 
 | 方法                                 | 描述                                           | 返回值                                                 |
 | ------------------------------------ | ---------------------------------------------- | ------------------------------------------------------ |
@@ -77,17 +59,17 @@ wait = WebDriverWait(
 
 用于等待页面元素的出现、可见或可交互。
 
-| 方法名                                                    | 含义                 | 成功条件                                  | 返回值             | 典型场景                         |
-| --------------------------------------------------------- | -------------------- | ----------------------------------------- | ------------------ | -------------------------------- |
-| **`presence_of_element_located(locator)`**                | 元素存在于 DOM       | 元素在 HTML 源码中存在                    | `WebElement`       | 元素刚插入 DOM，但可能不可见     |
-| **`visibility_of_element_located(locator)`**              | 元素可见             | 元素存在 + `height/width > 0` + 非 hidden | `WebElement`       | 需要读取文本、截图、确认显示     |
-| **`element_to_be_clickable(locator)`**                    | 元素可点击           | 元素可见 + `enabled=True`                 | `WebElement`       | **执行 `.click()` 前的标准动作** |
-| **`invisibility_of_element_located(locator)`**            | 元素不可见           | 元素不存在 **或** 存在但不可见            | `Boolean`          | 等待 Loading 遮罩层消失          |
-| **`presence_of_all_elements_located(locator)`**           | 所有元素存在         | 列表中所有元素都在 DOM 中                 | `List[WebElement]` | 等待列表数据加载完成             |
-| **`visibility_of_all_elements_located(locator)`**         | 所有元素可见         | 列表中所有元素都可见                      | `List[WebElement]` | 等待整个表格渲染完毕             |
-| **`element_to_be_selected(element)`**                     | 元素被选中           | 单选框/复选框处于 `selected` 状态         | `Boolean`          | 验证 Checkbox 是否勾选           |
-| **`element_located_to_be_selected(locator)`**             | 定位到的元素被选中   | 同上，但使用 locator 定位                 | `Boolean`          | 同上                             |
-| **`element_selection_state_to_be(element, is_selected)`** | 元素选中状态符合预期 | 当前选中状态 == `is_selected`             | `Boolean`          | 确保取消勾选或确保勾选           |
+| 方法名                                                    | 含义                   | 成功条件                                    | 返回值             | 典型场景                         |
+| --------------------------------------------------------- | ---------------------- | ------------------------------------------- | ------------------ | -------------------------------- |
+| **`presence_of_element_located(locator)`**                | `元素存在于 DOM`       | `元素在 HTML 源码中存在`                    | `WebElement`       | `元素刚插入 DOM，但可能不可见`   |
+| **`visibility_of_element_located(locator)`**              | `元素可见`             | `元素存在 + `height/width > 0` + 非 hidden` | `WebElement`       | `需要读取文本、截图、确认显示`   |
+| **`element_to_be_clickable(locator)`**                    | `元素可点击`           | `元素可见 + `enabled=True`                  | `WebElement`       | **`执行 .click() 前的标准动作`** |
+| **`invisibility_of_element_located(locator)`**            | `元素不可见`           | `元素不存在 **或** 存在但不可见`            | `Boolean`          | `等待 Loading 遮罩层消失`        |
+| **`presence_of_all_elements_located(locator)`**           | `所有元素存在`         | `列表中所有元素都在 DOM 中`                 | `List[WebElement]` | `等待列表数据加载完成`           |
+| **`visibility_of_all_elements_located(locator)`**         | `所有元素可见`         | `列表中所有元素都可见`                      | `List[WebElement]` | `等待整个表格渲染完毕`           |
+| **`element_to_be_selected(element)`**                     | `元素被选中`           | `单选框/复选框处于 `selected` 状态`         | `Boolean`          | `验证 Checkbox 是否勾选`         |
+| **`element_located_to_be_selected(locator)`**             | `定位到的元素被选中`   | `同上，但使用 locator 定位`                 | `Boolean`          | `同上`                           |
+| **`element_selection_state_to_be(element, is_selected)`** | `元素选中状态符合预期` | `当前选中状态 == `is_selected`              | `Boolean`          | `确保取消勾选或确保勾选`         |
 
 > **💡 Locator 格式**：所有需要 `locator` 的地方，必须传入元组 `(By.ID, "value")`。
 

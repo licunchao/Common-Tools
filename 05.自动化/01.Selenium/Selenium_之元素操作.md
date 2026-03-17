@@ -1,16 +1,10 @@
 # Selenium 元素操作完全指南
 
-本文整理了在使用 `from selenium.webdriver.common.by import By` 获取到元素对象后，所有常用的操作方法。内容涵盖**输入、点击、信息获取、状态判断、高级交互**及**截图**。Selenium 元素操作完全指南
+本文整理了在使用 `from selenium.webdriver.common.by import By` 获取到元素对象后，所有常用的操作方法。内容涵盖**输入、点击、信息获取、状态判断、高级交互**及**截图**。
 
 ------
 
-## 📋 目录
-
-
-
-------
-
-## 📝 输入与文本操作
+## 1、输入与文本操作
 
 主要用于表单交互（输入框、文本域等）。
 
@@ -32,7 +26,7 @@
 
 ------
 
-## 🖱️ 鼠标点击操作
+## 2、鼠标点击操作
 
 用于触发基础的点击事件。
 
@@ -45,7 +39,7 @@
 
 ------
 
-## 📢 获取元素信息
+## 3、获取元素信息
 
 用于断言验证或数据提取。
 
@@ -64,7 +58,7 @@
 
 ------
 
-## ✅ 状态判断
+## 4、状态判断
 
 返回布尔值 (`True`/`False`)，常用于 `if` 判断或 `assert` 断言。
 
@@ -76,7 +70,7 @@
 
 ------
 
-## 🎹 高级交互 (ActionChains)
+## 5、高级交互 (ActionChains)
 
 处理右键、双击、拖拽、鼠标悬停等复杂场景。
 
@@ -112,7 +106,7 @@ ActionChains(driver)\
 
 ------
 
-## 📸 元素截图
+## 6、元素截图
 
 Selenium 4+ 支持对单个元素进行截图。
 
@@ -123,7 +117,7 @@ Selenium 4+ 支持对单个元素进行截图。
 
 ------
 
-## 🚀 综合实战代码示例
+## 7、综合实战代码示例
 
 ```python
 from selenium import webdriver
@@ -171,9 +165,9 @@ welcome_msg.screenshot("welcome_check.png")
 
 ------
 
-## ⚠️ 常见问题与解决方案
+## 8、常见问题与解决方案
 
-***1. `ElementNotInteractableException`***
+### ***1. `ElementNotInteractableException`***
 
 - **现象**：代码报错，提示元素不可交互。
 - **原因**：元素虽然在 DOM 中，但被其他层（如加载遮罩、弹窗）遮挡，或者元素尚未渲染完成（不可见）。
@@ -182,7 +176,7 @@ welcome_msg.screenshot("welcome_check.png")
   - 先关闭遮挡的弹窗。
   - 尝试滚动页面使元素进入视口：`driver.execute_script("arguments[0].scrollIntoView();", element)`。
 
-*** 2. `.send_keys()` 不生效***
+### *** 2. `.send_keys()` 不生效***
 
 - **现象**：代码执行了，但输入框没内容。
 
@@ -200,7 +194,7 @@ welcome_msg.screenshot("welcome_check.png")
     driver.execute_script("arguments[0].dispatchEvent(new Event('input'));", element)
     ```
 
-***3. `.text` 获取为空***
+### ***3. `.text` 获取为空***
 
 - **现象**：明明页面上有字，`print(element.text)` 却是空的。
 - 原因：
