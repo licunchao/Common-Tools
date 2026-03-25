@@ -12,6 +12,12 @@
 | `docker push`    | 推送镜像到仓库           | `docker push user/my-app:v1`                             |
 | `docker history` | 查看镜像构建历史         | `docker history nginx`                                   |
 
+```dockerfile
+docker save -o ***.tar ***:0.3.7	# 将正在运行的容器打包
+docker load -i ***.tar				# 解压压缩包
+docker tag *** ***:0.4.0			# 修改容器的标签
+```
+
 ## **2、容器管理 (Containers)**
 
 | 命令             | 说明                 | 常用示例                                                     |
@@ -104,15 +110,33 @@ docker exec -it <容器名/ID> sh
 
 ```dockerfile
 进入容器后，你就是 root 用户（默认），可以执行：
-查看文件：ls -l, cat filename, less filename
-编辑文件：vi filename 或 nano filename (如果镜像里装了编辑器)
-删除文件：rm filename 或 rm -rf foldername
-移动/重命名：mv old_name new_name
-创建目录：mkdir new_folder
+# 查看文件：
+ls -l, cat filename, less filename
+# 编辑文件：
+vi filename 或 nano filename (如果镜像里装了编辑器)
+# 删除文件：
+rm filename 或 rm -rf foldername
+# 移动/重命名：
+mv old_name new_name
+# 创建目录：
+mkdir new_folder
 ⚠️ 注意：在容器内直接修改文件是临时的。如果容器被删除重建，这些修改会丢失（除非你挂载了 Volume 数据卷）。
 ```
 
-# 三、**核心总结与最佳实践**
+# 三、日志操作
+
+```dockerfile
+# 运行容器时指定日志轮转参数
+docker run -d \
+  --name nginx-test \
+  --log-driver json-file		# 默认日志驱动，必须指定
+  --log-opt max-size=50m		# 单个日志文件最大大小（b/k/m/g）
+  --log-opt max-file=5			# 保留的日志文件数量（超过则删除最旧的）
+  "compress": "true"			# 是否压缩旧日志文件（可选，默认false）
+  nginx:latest
+```
+
+# 四、**核心总结与最佳实践**
 
 ## **1. 记忆口诀**
 
